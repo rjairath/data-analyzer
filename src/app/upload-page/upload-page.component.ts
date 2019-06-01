@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import * as mapboxgl from 'mapbox-gl';
+import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 
 @Component({
   selector: 'app-upload-page',
@@ -8,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class UploadPageComponent implements OnInit {
 
   extensionError: Boolean = false;
+  mapRender: Boolean = false;
   fileContent: string = "";
   from_lat: Array<any> = [];
   from_long: Array<any> = [];
@@ -96,5 +99,16 @@ export class UploadPageComponent implements OnInit {
     }
     // console.log(this.geoJSON1);
     // console.log(this.geoJSON2);
+    this.mapRender = true;
+    this.renderMap();
+  }
+  renderMap(){
+    mapboxgl.accessToken = process.env.MAP_ACCESS_TOKEN;
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/dark-v10',
+      center: [77.67229, 12.92415],
+      zoom: 11
+    });
   }
 }

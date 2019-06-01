@@ -10,3 +10,9 @@
     border-left: 1px solid #CCCCCC;
     border-radius: 10px;
 }
+#map {
+    height: 80vh;
+    width: 100%;
+    position: relative;
+    top: 20px;
+}
