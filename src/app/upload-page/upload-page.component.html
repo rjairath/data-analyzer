@@ -1,3 +1,6 @@
-<p>
-  upload-page works!
-</p>
+<!-- Have the file uploaded locally and then read it -->
+<label for="upload" class="uploadButton">Upload CSV</label>
+<input id="upload" type="file" (change)="readFile($event.target.files)" style="visibility:hidden;">
+<p *ngIf="extensionError">Please upload a csv file</p>
+
+<pre>{{fileContent}}</pre>
