@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { MAP_ACCESS_TOKEN } from '../../../app-env';
+import * as geoLib from 'geojson';
+
 @Component({
   selector: 'app-upload-page',
   templateUrl: './upload-page.component.html',
@@ -17,7 +19,7 @@ export class UploadPageComponent implements OnInit {
   to_long: Array<any> = [];
   travel_type_id: Array<any> = [];
 
-  geoJSON1: Object = {};
+  geoJSONArray: Array<any> = [];
   geoJSON2: Object = {};
 
   constructor() {}
@@ -58,9 +60,7 @@ export class UploadPageComponent implements OnInit {
   //Make 2 geoJSONS here
   makeGeoJSON(){
     //geoJSON1
-    this.geoJSON1["type"] = "FeatureCollection";
-    this.geoJSON1["features"] = [];
-    for(let i=1; i<this.from_lat.length; i++){
+    for(let i=1; i<10; i++){
       let x = this.from_long[i];
       let y = this.from_lat[i];
       let z = this.travel_type_id[i];
@@ -82,7 +82,7 @@ export class UploadPageComponent implements OnInit {
           travelType: Number(z)
         }
       }
-      this.geoJSON1["features"].push(obj);
+      this.geoJSONArray.push(obj);
     }
 
     //geoJSON2
@@ -113,9 +113,7 @@ export class UploadPageComponent implements OnInit {
       }
       this.geoJSON2["features"].push(obj);
     }
-    // console.log(this.geoJSON1);
-    // console.log(this.geoJSON2);
-    debugger;
+    // debugger;
     this.renderMap();
   }
   renderMap(){
@@ -125,6 +123,136 @@ export class UploadPageComponent implements OnInit {
       style: 'mapbox://styles/mapbox/dark-v10',
       center: [77.67229, 12.92415],
       zoom: 11
+    });
+    this.geoJSONArray = [{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.67229,
+          12.92415
+        ]
+      },
+      "properties": {
+        "travelType": 2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          77.74935,
+          12.96691
+        ]
+      },
+      "properties": {
+        "travelType": 2
+      }
+    }]
+    map.on('load', function() {
+      map.addSource('fromPoints', {
+        type: 'geojson',
+        data: {
+          "type": "FeatureCollection",
+          "features": this.geoJSONArray
+        }
+      });
+      // add heatmap layer here
+      map.addLayer({
+        id: 'fromPoints-heat',
+        type: 'heatmap',
+        source: 'fromPoints',
+        maxzoom: 15,
+        paint: {
+          // increase weight as diameter breast height increases
+          'heatmap-weight': {
+            property: 'travelType',
+            type: 'exponential',
+            stops: [
+              [1, 0],
+              [3, 1]
+            ]
+          },
+          // increase intensity as zoom level increases
+          'heatmap-intensity': {
+            stops: [
+              [11, 1],
+              [15, 3]
+            ]
+          },
+          // assign color values be applied to points depending on their density
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0, 'rgba(236,222,239,0)',
+            0.2, 'rgb(208,209,230)',
+            0.4, 'rgb(166,189,219)',
+            0.6, 'rgb(103,169,207)',
+            0.8, 'rgb(28,144,153)'
+          ],
+          // increase radius as zoom increases
+          'heatmap-radius': {
+            stops: [
+              [11, 15],
+              [15, 20]
+            ]
+          },
+          // decrease opacity to transition into the circle layer
+          'heatmap-opacity': {
+            default: 1,
+            stops: [
+              [14, 1],
+              [15, 0]
+            ]
+          },
+        }
+      }, 'waterway-label');
+      // add circle layer here
+      map.addLayer({
+        id: 'fromPoints-point',
+        type: 'circle',
+        source: 'fromPoints',
+        minzoom: 14,
+        paint: {
+          // increase the radius of the circle as the zoom level and travelType value increases
+          'circle-radius': {
+            property: 'travelType',
+            type: 'exponential',
+            stops: [
+              [{ zoom: 15, value: 1 }, 5],
+              [{ zoom: 15, value: 3 }, 10],
+              [{ zoom: 22, value: 1 }, 20],
+              [{ zoom: 22, value: 3 }, 40],
+            ]
+          },
+          'circle-color': {
+            property: 'travelType',
+            type: 'exponential',
+            stops: [
+              [1, 'rgb(236,222,239)'],
+              [2, 'rgb(208,209,230)'],
+              [3, 'rgb(166,189,219)'],
+            ]
+          },
+          'circle-stroke-color': 'white',
+          'circle-stroke-width': 1,
+          'circle-opacity': {
+            stops: [
+              [14, 0],
+              [15, 1]
+            ]
+          }
+        }
+      }, 'waterway-label');
+    });
+
+    map.on('click', 'fromPoints-point', function(e) {
+      new mapboxgl.Popup()
+        .setLngLat(e.features[0].geometry.coordinates)
+        .setHTML('<b>Travel_type:</b> ' + e.features[0].properties.travelType)
+        .addTo(map);
     });
   }
 }
