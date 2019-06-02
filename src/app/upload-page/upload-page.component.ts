@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import * as MapboxDraw from '@mapbox/mapbox-gl-draw';
 import { MAP_ACCESS_TOKEN } from '../../../app-env';
-import * as geoLib from 'geojson';
 
 @Component({
   selector: 'app-upload-page',
@@ -19,7 +17,7 @@ export class UploadPageComponent implements OnInit {
   to_long: Array<any> = [];
   travel_type_id: Array<any> = [];
 
-  geoJSONArray: Array<any> = [];
+  geoJSONArray1: Array<any> = [];
   geoJSON2: Object = {};
 
   constructor() {}
@@ -59,8 +57,8 @@ export class UploadPageComponent implements OnInit {
   }
   //Make 2 geoJSONS here
   makeGeoJSON(){
-    //geoJSON1
-    for(let i=1; i<10; i++){
+    //geoJSONArray1
+    for(let i=1; i<this.from_lat.length; i++){
       let x = this.from_long[i];
       let y = this.from_lat[i];
       let z = this.travel_type_id[i];
@@ -82,7 +80,7 @@ export class UploadPageComponent implements OnInit {
           travelType: Number(z)
         }
       }
-      this.geoJSONArray.push(obj);
+      this.geoJSONArray1.push(obj);
     }
 
     //geoJSON2
@@ -118,44 +116,20 @@ export class UploadPageComponent implements OnInit {
   }
   renderMap(){
     mapboxgl.accessToken = MAP_ACCESS_TOKEN;
+    let temp1 = this.geoJSONArray1;
+
     var map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/mapbox/dark-v10',
       center: [77.67229, 12.92415],
       zoom: 11
     });
-    this.geoJSONArray = [{
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.67229,
-          12.92415
-        ]
-      },
-      "properties": {
-        "travelType": 2
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          77.74935,
-          12.96691
-        ]
-      },
-      "properties": {
-        "travelType": 2
-      }
-    }]
     map.on('load', function() {
       map.addSource('fromPoints', {
         type: 'geojson',
         data: {
           "type": "FeatureCollection",
-          "features": this.geoJSONArray
+          "features":  temp1
         }
       });
       // add heatmap layer here
@@ -251,7 +225,7 @@ export class UploadPageComponent implements OnInit {
     map.on('click', 'fromPoints-point', function(e) {
       new mapboxgl.Popup()
         .setLngLat(e.features[0].geometry.coordinates)
-        .setHTML('<b>Travel_type:</b> ' + e.features[0].properties.travelType)
+        .setHTML('<b>travel_type:</b> ' + e.features[0].properties.travelType)
         .addTo(map);
     });
   }
