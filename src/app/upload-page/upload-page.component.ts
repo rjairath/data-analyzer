@@ -21,6 +21,7 @@ export class UploadPageComponent implements OnInit {
   geoJSONArray1: Array<any> = [];
   geoJSONArray2: Array<any> = [];
   fileRead: Boolean = false;
+  mapLoads: Boolean = false;
 
   checkbox = [
     {label: "starting location", checked: false},
@@ -36,6 +37,7 @@ export class UploadPageComponent implements OnInit {
     this.fileNotUploaded = false;
     this.extensionError = false;
     this.fileRead = false;
+    this.mapLoads = false;
     const ele1 = document.getElementById("checkbox1") as HTMLInputElement;
     const ele2 = document.getElementById("checkbox2") as HTMLInputElement;
     ele1.checked = false;
@@ -127,6 +129,7 @@ export class UploadPageComponent implements OnInit {
     // this.renderMap();
   }
   checkSelected(label: string){
+    this.mapLoads = true;
     const ele1 = document.getElementById("checkbox1") as HTMLInputElement;
     const ele2 = document.getElementById("checkbox2") as HTMLInputElement;
     if(label == "starting location"){

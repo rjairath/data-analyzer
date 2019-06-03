@@ -20,16 +20,22 @@
     top: 33%;
 }
 .customButton{
-    font: bold 1.5rem Arial;
+    font: Arial;
     text-decoration: none;
-    background-color: #EEEEEE;
     color: #333333;
     padding: 0.25rem;
     border-top: 1px solid #CCCCCC;
     border-right: 1px solid #333333;
     border-bottom: 1px solid #333333;
     border-left: 1px solid #CCCCCC;
-    border-radius: 10px;
+    background: linear-gradient(to bottom, #FC3, #FB0);
+    background-origin: border-box;
+    border-radius: 2px;
+    color: #000;
+    cursor: pointer;
+    font-size: 1.3rem;
+    padding: 12px 20px;
+    text-align: center;
 }
 #uploadCSVButton{
     position: fixed;

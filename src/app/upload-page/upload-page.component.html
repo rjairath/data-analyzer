@@ -9,18 +9,18 @@
         <div class="checkboxDiv">
             <label for="checkbox1">
                 <input type="checkbox" (change)="checkSelected(checkbox[0].label)" [disabled]="extensionError || fileNotUploaded"
-                    id="checkbox1">{{checkbox[0].label}}
+                    id="checkbox1" style="vertical-align: middle;">{{checkbox[0].label}}
             </label>
             <label for="checkbox2">
                 <input type="checkbox" (change)="checkSelected(checkbox[1].label)" [disabled]="extensionError || fileNotUploaded"
-                    id="checkbox2">{{checkbox[1].label}}
+                    id="checkbox2" style="vertical-align: middle;">{{checkbox[1].label}}
             </label>
         </div>
     </div>
     
     <div id="mapContainer">
         <div id="map">
-            <img src="/assets/map-placeholder.png" alt="map-img" *ngIf="!fileRead">
+            <img src="/assets/map-placeholder.png" alt="map-img" *ngIf="!mapLoads">
         </div>
         <button class="customButton" id="analyzeButton">Analyze</button>
     </div>
