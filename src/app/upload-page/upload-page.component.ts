@@ -18,7 +18,12 @@ export class UploadPageComponent implements OnInit {
   travel_type_id: Array<any> = [];
 
   geoJSONArray1: Array<any> = [];
-  geoJSON2: Object = {};
+  geoJSONArray2: Array<any> = [];
+
+  checkbox = [
+    {label: "starting location", checked: false},
+    {label: "ending location", checked: false}
+  ]
 
   constructor() {}
 
@@ -26,7 +31,16 @@ export class UploadPageComponent implements OnInit {
   
   readFile(input: FileList){
     //Add an extension check
+    //Enable the checkbox buttons here
     this.extensionError = false;
+    this.checkbox.forEach((x)=>{
+      x.checked = false;
+    });
+    const ele1 = document.getElementById("checkbox1") as HTMLInputElement;
+    const ele2 = document.getElementById("checkbox2") as HTMLInputElement;
+    ele1.checked = false;
+    ele2.checked = false;
+    
     let fileName = input[0].name;
     let ext = fileName.split('.')[1];
     if(ext != "csv" && ext != "CSV"){
@@ -83,9 +97,7 @@ export class UploadPageComponent implements OnInit {
       this.geoJSONArray1.push(obj);
     }
 
-    //geoJSON2
-    this.geoJSON2["type"] = "FeatureCollection";
-    this.geoJSON2["features"] = [];
+    //geoJSONArray2
     for(let i=1; i<this.to_lat.length; i++){
       let x = this.to_long[i];
       let y = this.to_lat[i];
@@ -94,7 +106,6 @@ export class UploadPageComponent implements OnInit {
       if(!z || z == "NULL"){
         z = 2;
       }
-
       if(x === "NULL" || y === "NULL" || !x || !y){
         continue;
       }
@@ -109,7 +120,7 @@ export class UploadPageComponent implements OnInit {
           travelType: Number(z)
         }
       }
-      this.geoJSON2["features"].push(obj);
+      this.geoJSONArray2.push(obj);
     }
     // debugger;
     this.renderMap();
@@ -227,6 +238,13 @@ export class UploadPageComponent implements OnInit {
         .setLngLat(e.features[0].geometry.coordinates)
         .setHTML('<b>travel_type:</b> ' + e.features[0].properties.travelType)
         .addTo(map);
+    });
+  }
+  checkSelected(label: string){
+    this.checkbox.forEach((element)=>{
+      if(label == element.label){
+        element.checked = true;
+      }
     });
   }
 }

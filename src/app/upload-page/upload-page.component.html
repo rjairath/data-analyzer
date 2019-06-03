@@ -1,6 +1,24 @@
 <!-- Have the file uploaded locally and then read it -->
-<label for="upload" class="uploadButton">Upload CSV</label>
-<input id="upload" type="file" (change)="readFile($event.target.files)" style="visibility:hidden;">
-<p *ngIf="extensionError">Please upload a csv file</p>
+<div id="topDiv">
+    <div id="dashboard" class="column">
+        <p *ngIf="extensionError" id="errorMsg">Please upload a csv file</p>
+        <label for="upload" class="customButton" id="uploadCSVButton">Upload CSV</label>
+        <input id="upload" type="file" (change)="readFile($event.target.files)" style="visibility:hidden;">
 
-<div id='map'></div>
+        <div class="checkboxDiv">
+            <label for="checkbox1">
+                <input type="checkbox" [disabled]="checkbox[0].checked" (change)="checkSelected(checkbox[0].label)"
+                    id="checkbox1">{{checkbox[0].label}}
+            </label>
+            <label for="checkbox2">
+                <input type="checkbox" [disabled]="checkbox[1].checked" (change)="checkSelected(checkbox[1].label)"
+                    id="checkbox2">{{checkbox[1].label}}
+            </label>
+        </div>
+    </div>
+    
+    <div id="mapContainer">
+        <div id="map"></div>
+        <button class="customButton" id="analyzeButton">Analyze</button>
+    </div>
+</div>
