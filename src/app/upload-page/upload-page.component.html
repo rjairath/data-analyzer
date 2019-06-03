@@ -7,11 +7,11 @@
 
         <div class="checkboxDiv">
             <label for="checkbox1">
-                <input type="checkbox" [disabled]="checkbox[0].checked" (change)="checkSelected(checkbox[0].label)"
+                <input type="checkbox" (change)="checkSelected(checkbox[0].label)"
                     id="checkbox1">{{checkbox[0].label}}
             </label>
             <label for="checkbox2">
-                <input type="checkbox" [disabled]="checkbox[1].checked" (change)="checkSelected(checkbox[1].label)"
+                <input type="checkbox" (change)="checkSelected(checkbox[1].label)"
                     id="checkbox2">{{checkbox[1].label}}
             </label>
         </div>
