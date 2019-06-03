@@ -14,6 +14,11 @@
     position: fixed;
     top: 33%;
 }
+#infoMsg{
+    color: red;
+    position: fixed;
+    top: 33%;
+}
 .customButton{
     font: bold 1.5rem Arial;
     text-decoration: none;
@@ -41,9 +46,12 @@
     padding: 20px;
 }
 #map{
-    background-color: green;
     width: 100%;
     height: 80%;
+}
+#map img{
+    max-height: 100%;
+    width: 100%;
 }
 .column {
     height: 100%;

@@ -10,6 +10,7 @@ import { MAP_ACCESS_TOKEN } from '../../../app-env';
 export class UploadPageComponent implements OnInit {
 
   extensionError: Boolean = false;
+  fileNotUploaded: Boolean = true;
   fileContent: string = "";
   from_lat: Array<any> = [];
   from_long: Array<any> = [];
@@ -19,6 +20,7 @@ export class UploadPageComponent implements OnInit {
 
   geoJSONArray1: Array<any> = [];
   geoJSONArray2: Array<any> = [];
+  fileRead: Boolean = false;
 
   checkbox = [
     {label: "starting location", checked: false},
@@ -31,8 +33,9 @@ export class UploadPageComponent implements OnInit {
   
   readFile(input: FileList){
     //Add an extension check
-    //Enable the checkbox buttons here
+    this.fileNotUploaded = false;
     this.extensionError = false;
+    this.fileRead = false;
     const ele1 = document.getElementById("checkbox1") as HTMLInputElement;
     const ele2 = document.getElementById("checkbox2") as HTMLInputElement;
     ele1.checked = false;
@@ -53,6 +56,7 @@ export class UploadPageComponent implements OnInit {
     fileReader.readAsText(fileObject);
     //This is an asynchronous function
     fileReader.onloadend = function(x) {
+      self.fileRead = true;
       let temp: any = x.target;
       let rows = temp.result.split('\n');
       for(let i=0; i<rows.length; i++){

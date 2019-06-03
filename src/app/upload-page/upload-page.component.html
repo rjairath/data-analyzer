@@ -2,23 +2,26 @@
 <div id="topDiv">
     <div id="dashboard" class="column">
         <p *ngIf="extensionError" id="errorMsg">Please upload a csv file</p>
+        <p *ngIf="fileRead" id="infoMsg">File has been read</p>
         <label for="upload" class="customButton" id="uploadCSVButton">Upload CSV</label>
         <input id="upload" type="file" (change)="readFile($event.target.files)" style="visibility:hidden;">
 
         <div class="checkboxDiv">
             <label for="checkbox1">
-                <input type="checkbox" (change)="checkSelected(checkbox[0].label)"
+                <input type="checkbox" (change)="checkSelected(checkbox[0].label)" [disabled]="extensionError || fileNotUploaded"
                     id="checkbox1">{{checkbox[0].label}}
             </label>
             <label for="checkbox2">
-                <input type="checkbox" (change)="checkSelected(checkbox[1].label)"
+                <input type="checkbox" (change)="checkSelected(checkbox[1].label)" [disabled]="extensionError || fileNotUploaded"
                     id="checkbox2">{{checkbox[1].label}}
             </label>
         </div>
     </div>
     
     <div id="mapContainer">
-        <div id="map"></div>
+        <div id="map">
+            <img src="/assets/map-placeholder.png" alt="map-img" *ngIf="!fileRead">
+        </div>
         <button class="customButton" id="analyzeButton">Analyze</button>
     </div>
 </div>
