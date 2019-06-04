@@ -154,7 +154,8 @@ export class UploadPageComponent implements OnInit {
     }
   }
   renderMap1(){
-    mapboxgl.accessToken = MAP_ACCESS_TOKEN;
+    // mapboxgl.accessToken = MAP_ACCESS_TOKEN;
+    mapboxgl.accessToken = 'pk.eyJ1IjoicmphaXJhdGgiLCJhIjoiY2p3ZHd3N2prMTN6aDQ5bHpqY3c1MGszdSJ9.qa06QssTFbFbP5UEey3ouA';
     let temp1 = this.geoJSONArray1;
 
     var map = new mapboxgl.Map({
