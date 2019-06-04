@@ -71,7 +71,16 @@ export class UploadPageComponent implements OnInit {
         self.to_lat.push(r1[16]);
         self.to_long.push(r1[17]);
         self.travel_type_id.push(r1[4]);
+        //Make the dataset here
+        let t = new Date(r1[10]).getHours();
+        if(self.dataset[t]){
+          self.dataset[t]++;
+        }
+        else{
+          self.dataset[t] = 1;
+        }
       }
+      // debugger;
       self.makeGeoJSON();
     }
   }
@@ -377,13 +386,13 @@ export class UploadPageComponent implements OnInit {
     });
   }
   loadChart(){
-    this.dataset = [{"t": 0, "n": 230}, {"t": 1, "n": 234}, {"t": 2, "n": 500}, {"t": 3, "n": 800}];
+    // this.dataset = [{"t": 0, "n": 230}, {"t": 1, "n": 234}, {"t": 2, "n": 500}, {"t": 3, "n": 800}];
     // Bar chart:
     var labels = [], data=[];
-    this.dataset.forEach((obj)=>{
-      labels.push(obj.t);
-      data.push(obj.n);
-    })
+    for(let i=0; i<this.dataset.length; i++){
+      labels.push(i);
+      data.push(this.dataset[i]);
+    }
     this.BarChart = new Chart('barChart', {
       type: 'bar',
       data: {
