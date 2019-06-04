@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { MAP_ACCESS_TOKEN } from '../../../app-env';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-upload-page',
@@ -27,6 +28,8 @@ export class UploadPageComponent implements OnInit {
     {label: "starting location", checked: false},
     {label: "ending location", checked: false}
   ];
+  dataset = [];
+  BarChart = [];
 
   constructor() {}
 
@@ -373,4 +376,38 @@ export class UploadPageComponent implements OnInit {
         .addTo(map);
     });
   }
+  loadChart(){
+    this.dataset = [{"t": 0, "n": 230}, {"t": 1, "n": 234}, {"t": 2, "n": 500}, {"t": 3, "n": 800}];
+    // Bar chart:
+    var labels = [], data=[];
+    this.dataset.forEach((obj)=>{
+      labels.push(obj.t);
+      data.push(obj.n);
+    })
+    this.BarChart = new Chart('barChart', {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '# of Cabs',
+          data: data,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        title: {
+          text: "Cabs at each hour of the day",
+          display: true
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: false
+            }
+          }]
+        }
+      }
+    });
+  }
+  
 }

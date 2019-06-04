@@ -3,6 +3,10 @@
     <div id="dashboard" class="column">
         <p *ngIf="extensionError" id="errorMsg">Please upload a csv file</p>
         <p *ngIf="fileRead" id="infoMsg">File has been read</p>
+
+        <button class="customButton" id="analyzeButton" (click)="loadChart()"
+            [disabled]="extensionError || fileNotUploaded"
+            [class.greyOut] = "extensionError || fileNotUploaded">Analyze</button>
         <label for="upload" class="customButton" id="uploadCSVButton">Upload CSV</label>
         <input id="upload" type="file" (change)="readFile($event.target.files)" style="visibility:hidden;">
 
@@ -22,6 +26,6 @@
         <div id="map">
             <img src="/assets/map-placeholder.png" alt="map-img" *ngIf="!mapLoads">
         </div>
-        <button class="customButton" id="analyzeButton">Analyze</button>
+        <canvas id="barChart"></canvas>
     </div>
 </div>
